@@ -174,6 +174,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
+Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf.vim'
@@ -323,7 +324,6 @@ let s:idemenu = #{
     \ cheat: [
         \ ' (Space d) [Definition]     Go to Definition ',
         \ ' (Space r) [Reference]      Reference ',
-        \ ' (Space f) [Formatter]      foramtting ',
         \ ' (Space o) [Outline]        view outline on popup ',
         \ ' (Space ?) [Document]       show document on popup scroll C-f/b ',
         \ ' (Space ,) [Next Diagnosis] jump next diagnosis ',
@@ -378,14 +378,7 @@ fu! Idemenu_exe(_, idx) abort
         cal writefile([code], 'contest_setting.txt')
         cal popup_notification(['contest_setting : '.code], #{border:[], zindex:999, line: &lines-30, col: &columns-40, time:2000})
     elseif a:idx == 5
-        " TODO スニペット開くコマンド、ultiだと違うかな?
-        if exists(':CocCommand')
-            exe 'CocCommand snippets.editSnippets'
-        else
-            cal s:echoE('Sorry, [Snippet*] needs coc.nvim.')
-            cal popup_close(s:idemenu.cheatid)
-            retu 1
-        endif
+        exe 'CocList snippets'
     elseif a:idx == 6
         cal s:atcoder_timer_start()
     elseif a:idx == 7
@@ -478,6 +471,79 @@ fu! s:atcoder_timer(tid) abort
     if s:actimer_sec > 5400
         cal matchadd('DarkRed', '[^ ]', 16, -1, #{window: s:actimer_pid})
     endif
+endf
+
+" startify -------------------------------
+let s:start = #{}
+
+" ぼっちざろっく{{{
+let s:start.btr_logo = [
+    \'                                                                                                                                              dN',
+    \'                                                                                                              ..                             JMF',
+    \'                                                                                                         ..gMMMM%                           JMF',
+    \'                                                                                                       .MM9^ .MF                           (MF',
+    \'                                                                                              .(,      ("   .M#                  .g,      .MF',
+    \'                                        .,  dN                                             gg,,M@          .M#                  .M#!      (M>',
+    \'                                        JM} M#             .MNgg.                     .g,  ?M[ 7B         .MMg+gg,.           .MM"        ."',
+    \'                                ...gNMN,.Mb MN           .gMM9!                      .(MN,  .=           .MMM9=  ?MN,         (WN,      .MM ',
+    \'                   jN-      ..gMMN#!     (Mp(M}       .+MMYMF                    ..kMMWM%               ,M#^       dN.          .WNJ,   JM',
+    \'                   MM     .MM9^  dN,                 dNB^ (M%                   ?M"!  ,M\        .,               .M#   .&MMMN,    ?"   M#',
+    \'                   MN            .MN#^                    dM:  ..(J-,                 ,B         .TM             .M#   ,M@  .MF',
+    \'                   MN.       ..MMBMN_                     dN_.MM@"!?MN.   TMm     .a,                           (M@         MM^',
+    \'                   MN.     .MM"  JMb....       ..        dMMM=     .Mb            ?HNgJ..,                   .MM^',
+    \'                   dM{          -MMM#7"T""   .dN#TMo       ?      .MM^                 ?!                 +gM#=',
+    \'                   (M]         .MN(N#       .M@  .MF              .MM^                                      ~',
+    \'                   .MN          ?"""             MM!            .MMD',
+    \'                    ?N[                                         7"',
+    \'                     TMe',
+    \'                      ?MN,',
+    \'                        TMNg,'
+    \]
+"}}}
+
+" AtCoder{{{
+let s:start.ac_logo = [
+    \'                                                                           .',
+    \'                                                                         .dN.',
+    \'                                                                      ..d@M#J#(,',
+    \'                                                                   vRMPMJNd#dbMG#(F',
+    \'                                                         (O.  U6..  WJNdPMJFMdFdb#`  .JU` .Zo',
+    \'                                                      .. +NM=(TB5.-^.BMDNdJbEddMd ,n.?T@3?MNm  ..',
+    \'                                                     .mg@_J~/?`.a-XNxvMMW9""TWMMF.NHa._ ?_,S.Tmg|',
+    \'                                                  .Js ,3,`..-XNHMT"= ...d"5Y"X+.. ?"8MNHHa.. (,b uZ..',
+    \'                                                 J"17"((dNMMB"^ ..JTYGJ7"^  ?"T&JT9QJ..?"TMNNHa,?727N',
+    \'                                                 .7    T"^..JT"GJv"=`             ?"4JJT9a.,?T"`  .7!',
+    \'                                                         M~JY"!     ....<.Zj+,(...     .7Ta_M',
+    \'                                             .JWkkWa,    d-F     .+;.ge.ga&.aa,ua+.g,     ,}#    .(Wkkkn,',
+    \'                                            .W9AaeVY=-.. J;b   .XH3dHHtdHHDJHHH(HHH(WH,   J(F  ..?T4agdTH-',
+    \'                                             6XkkkH=!    ,]d  .HHtdHHH.HHHbJHHH[WHHH(HHL  k.]    _7HkkkHJ:',
+    \'                                             JqkP?H_      N(; TYY?YYY9(YYYD?YYYt7YYY\YY9 .Fd!     .WPjqqh',
+    \'                                             .mmmH,``      d/b WHHJHH@NJHHH@dHHHFdHHHtHH#`.1#       `(dqqq]',
+    \'                                            ,gmmgghJQQVb  ,bq.,YY%7YYY(YYY$?YYY^TYYY(YY^ K.]  JUQmAJmmmmg%',
+    \'                                             ggggggggh,R   H,]  T#mTNNbWNN#dNN#(NN@(N@! .t#   d(Jgggggggg:',
+    \'                                            .@@@@@#"_JK4,  ,bX.   ?i,1g,jge.g2+g2i,?`   K.t  .ZW&,7W@@@@@h.',
+    \'                                        `..H@@@@@P   7 .H`  W/b        .^."?^(!        -1#   W, ?   T@@@@@Ma,`',
+    \'                                        dH@HHHM"       U\   .N,L        ..            .$d    .B`     ."MHHH@HN.',
+    \'                                   ....JMHHHHH@              ,N(p      .dH.d"77h.    .$J\              dHHHHHMU....',
+    \'                                  ` WHH#,7MHHM{               ,N,h     d^.W,        .^J^               .MHHM"_d#HN.',
+    \'                                   ,jH#Mo .MMW:                .W,4,  J\   Ta.-Y` .J(#                 .HMM- .M#MF!',
+    \'                                     .MN/ d@?M+                  7e(h.           .3.F                  .MDd# (MML`',
+    \'                                     .M4%  ?H, 7a,                .S,7a.       .Y.#^                .,"`.d=  ,PWe',
+    \'                                    .! ?     dN .N,                 (N,7a.   .Y(d=                 .d! d@     4 .!',
+    \'                                             .W` .!                   ?H,?GJ".d"                    ^  B',
+    \'                                                                        (SJ.#=',
+    \'                                                       J             ....            .M:',
+    \'                                                      JUb     .   .#    (\            M~',
+    \'                                                     .\.M;  .W@"` M}       .y7"m. .J"7M~ .v74e ,M7B',
+    \'                                                    .F  ,N.  J]   M]       M)  JF M_  M~ d-     M`',
+    \'                                                   .W,  .db, Jh.   Th...J\ /N..Y` ?N-.Ma.-M&.> .M-',
+    \]
+"}}}
+
+let g:startify_custom_header = s:start.btr_logo
+com! AtCoderLogo cal AtCoderLogo()
+fu! AtCoderLogo() abort
+    let g:startify_custom_header = s:start.ac_logo
 endf
 
 
