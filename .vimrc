@@ -307,8 +307,7 @@ nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(
 nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 
 " ultisnips --------------------------------
-" TODO なんか変
-let g:UltiSnipsExpandTrigger="<Down>"
+let g:UltiSnipsExpandTrigger="<Nop>"
 
 " ################# Anchor #################
 " Tab 5row Anchor
