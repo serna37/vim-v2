@@ -405,8 +405,10 @@ fu! s:idemenu_exe(_, idx) abort
         cal writefile([code], 'contest_setting.txt')
         cal popup_notification(['contest_setting : '.code], #{border:[], zindex:999, line: &lines-30, col: &columns-40, time:2000})
     elseif a:idx == 6
+        cal s:bell_hero()
         cal s:atcoder_timer_start()
     elseif a:idx == 7
+        cal s:bell_submarine()
         cal s:atcoder_timer_stop()
     elseif a:idx == 8
         exe '%d'
