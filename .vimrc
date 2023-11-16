@@ -81,12 +81,6 @@ inoremap jj <Esc>:CommaOrSemiColon<CR>:w<CR>
 nnoremap vv ^v$h
 " save
 nnoremap <C-s> :w<CR>
-" move cursor at insert mode
-inoremap <C-h> <C-o>h
-inoremap <C-l> <C-o>l
-inoremap <C-k> <C-o>k
-inoremap <C-j> <C-o>j
-inoremap <C-a> <C-o>A
 " d = delete(no clipboard)
 nnoremap d "_d
 vnoremap d "_d
