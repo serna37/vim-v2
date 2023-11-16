@@ -44,9 +44,9 @@ set splitright
 nnoremap <C-n> <Plug>(buf-prev)
 nnoremap <C-p> <Plug>(buf-next)
 nnoremap <Leader>x <Plug>(buf-close)
-nnoremap <Leader>t :cal popup_create(term_start([&shell],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
-nnoremap <Leader>g :cal popup_create(term_start(['lazygit'],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
-nnoremap <Leader>z :Goyo<CR>
+nnoremap <silent><Leader>t :cal popup_create(term_start([&shell],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
+nnoremap <silent><Leader>g :cal popup_create(term_start(['lazygit'],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
+nnoremap <silent><Leader>z :Goyo<CR>
 
 " ##################         MOTION         ###################
 " row move
@@ -64,7 +64,7 @@ nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
 nnoremap <C-h> ^<Plug>(anchor)
 nnoremap <C-l> $<Plug>(anchor)
 nnoremap <leader>w <Plug>(QuickScopeToggle)
-nnoremap <Leader>m :CocCommand fzf-preview.Bookmarks<CR>
+nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 nnoremap <Leader>v <Plug>(ide-menu)
 
 " ##################         EDIT           ###################
@@ -131,11 +131,11 @@ set shortmess-=S " show hit word's number at right bottom
 nnoremap # *N<Plug>(quickhl-manual-this)
 nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset):noh<CR>
 nnoremap s <Plug>(easymotion-sn)
-nnoremap <Leader>s :CocCommand fzf-preview.Lines<CR>
-nnoremap <Leader>e :CocCommand explorer --width 30<CR>
-nnoremap <Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
-nnoremap <Leader>b :CocCommand fzf-preview.Buffers<CR>
-nnoremap <Leader>h :CocCommand fzf-preview.MruFiles<CR>
+nnoremap <silent><Leader>s :CocCommand fzf-preview.Lines<CR>
+nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
+nnoremap <silent><Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
+nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
 nnoremap <Leader><Leader>s :CocCommand fzf-preview.ProjectGrep 
 
 " ##################         OTHERS         ###################
@@ -299,9 +299,9 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 inoremap <silent><expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
 inoremap <silent><expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 nnoremap <Leader>d <Plug>(coc-definition)
-nnoremap <Leader>r :CocCommand fzf-preview.CocReferences<CR>
-nnoremap <Leader>o :CocCommand fzf-preview.CocOutline<CR>
-nnoremap <Leader>? :cal CocAction('doHover')<CR>
+nnoremap <silent><Leader>r :CocCommand fzf-preview.CocReferences<CR>
+nnoremap <silent><Leader>o :CocCommand fzf-preview.CocOutline<CR>
+nnoremap <silent><Leader>? :cal CocAction('doHover')<CR>
 nnoremap <Leader>, <plug>(coc-diagnostic-next)
 nnoremap <Leader>. <plug>(coc-diagnostic-prev)
 nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
@@ -309,7 +309,7 @@ nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(
 
 " ultisnips --------------------------------
 " TODO なんか変
-"let g:UltiSnipsExpandTrigger="<Down>"
+let g:UltiSnipsExpandTrigger="<Down>"
 
 " ################# Anchor #################
 " Tab 5row Anchor
