@@ -204,7 +204,6 @@ let s:coc_extensions = [
     \ ]
 
 let s:coc_config = ['{',
-    \ '    "snippets.ultisnips.trace": true,',
     \ '    "explorer.icon.enableNerdfont": true,',
     \ '    "explorer.file.showHiddenFiles": true,',
     \ '    "python.formatting.provider": "yapf",',
