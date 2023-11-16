@@ -80,6 +80,8 @@ inoremap jj <Esc>:CommaOrSemiColon<CR>:w<CR>
 nnoremap vv ^v$h
 " save
 nnoremap <C-s> :w<CR>
+" o -> A+CR (adhoc for snippet tabstop bug...)
+nnoremap o A<CR>
 " d = delete(no clipboard)
 nnoremap d "_d
 vnoremap d "_d
