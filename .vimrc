@@ -59,8 +59,10 @@ nnoremap <S-Tab> 5k<Plug>(anchor)
 nnoremap H H<Plug>(anchor)
 nnoremap M M<Plug>(anchor)
 nnoremap L L<Plug>(anchor)
-nnoremap <C-j> <Plug>(edgemotion-j)
-nnoremap <C-k> <Plug>(edgemotion-k)
+nnoremap <C-j> <Plug>(edgemotion-j)<Plug>(anchor)
+nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
+nnoremap <C-h> ^<Plug>(anchor)
+nnoremap <C-l> $<Plug>(anchor)
 nnoremap <leader>w <Plug>(QuickScopeToggle)
 nnoremap <Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 nnoremap <Leader>v <Plug>(ide-menu)
@@ -74,7 +76,7 @@ set backspace=indent,eol,start " backspace attitude on insert mode
 set showmatch " jump pair of parentheses when write
 set matchtime=3 " jump term sec
 " return normal & save
-inoremap jj <Esc>:w<CR>
+inoremap jj <Esc>:CommaOrSemiColon<CR>:w<CR>
 " row visual
 nnoremap vv ^v$h
 " save
@@ -174,6 +176,9 @@ Plug 'unblevable/quick-scope'
 Plug 't9md/vim-quickhl'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'junegunn/goyo.vim'
+Plug 'preservim/vim-indent-guides'
+Plug 'andymass/vim-matchup'
+Plug 'lfilho/cosco.vim'
 Plug 'markonm/traces.vim'
 Plug 'thinca/vim-quickrun'
 Plug 'joshdick/onedark.vim'
@@ -199,7 +204,7 @@ let s:coc_extensions = [
     \ ]
 
 let s:coc_config = ['{',
-    \ '    "snippets.ultisnips.pythonPrompt": false,',
+    \ '    "snippets.ultisnips.trace": true,',
     \ '    "explorer.icon.enableNerdfont": true,',
     \ '    "explorer.file.showHiddenFiles": true,',
     \ '    "python.formatting.provider": "yapf",',
@@ -221,22 +226,37 @@ com! CocSetupAll cal CocSetup()
 
 " comfortable motion -----------------------
 let g:comfortable_motion_interval = 1000.0 / 60
-let g:comfortable_motion_friction = 80.0
+let g:comfortable_motion_friction = 70.0
 let g:comfortable_motion_air_drag = 5.0
 
 " cleaver-f --------------------------------
 let g:clever_f_smart_case = 1
 aug cleaver_f
     au!
-    au ColorScheme * highlight CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=245
+    au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=236
 aug END
 
 " quick scope ------------------------------
 aug qs_colors
   au!
-  au ColorScheme * highlight QuickScopePrimary ctermfg=204 cterm=underline
-  au ColorScheme * highlight QuickScopeSecondary ctermfg=81 cterm=underline
+  au ColorScheme * hi QuickScopePrimary ctermfg=204 cterm=underline
+  au ColorScheme * hi QuickScopeSecondary ctermfg=81 cterm=underline
 aug END
+
+" indent guide -----------------------------
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_exclude_filetypes = ['help', 'coc-explorer', 'startify']
+let g:indent_guides_auto_colors = 0
+aug indent_guide
+    au!
+    au ColorScheme * hi IndentGuidesOdd ctermbg=236
+    au ColorScheme * hi IndentGuidesEven ctermbg=236
+aug END
+
+" cosco ------------------------------------
+let g:cosco_filetype_whitelist = ['cpp']
 
 " airline ----------------------------------
 let g:airline_theme = 'onedark'
@@ -318,14 +338,14 @@ noremap <silent><Plug>(anchor) :<C-u>cal <SID>anchor_set()<CR>
 let s:idemenu = #{
     \ menuid: 0, mttl: ' IDE MENU (j / k) Enter choose ',
     \ menu: [
-        \ '[⚙️  Test]         test by oj cmd',
+        \ '[⚙️  AcTest]       test by oj cmd',
         \ '[Format]          applay format for this file',
         \ '[ReName]          rename current word recursively',
-        \ '[🚀 ContestCode]  checkout contest code',
         \ '[Snippet]         edit snippets',
+        \ '[🚀 ContestCode]  checkout contest code',
         \ '[⏱️ AcTimer]      start timer for AtCoder ',
         \ '[🔓 AcStop]       stop timer for AtCoder',
-        \ '[🎬 All Cut]      cut all & next Problem ',
+        \ '[🎬 Ac Cut]       cut all & next Problem ',
     \ ],
     \ cheatid: 0, cheattitle: ' LSP KeyMaps ',
     \ cheat: [
@@ -340,7 +360,7 @@ let s:idemenu = #{
 
 fu! s:idemenu.open() abort
     let self.menuid = popup_menu(self.menu, #{title: self.mttl, border: [], borderchars: ['─','│','─','│','╭','╮','╯','╰'],
-        \ callback: 'Idemenu_exe'})
+        \ callback: 's:idemenu_exe'})
     cal setwinvar(self.menuid, '&wincolor', 'String')
     cal matchadd('DarkRed', '\[.*\]', 16, -1, #{window: self.menuid})
     let self.cheatid = popup_create(self.cheat, #{title: self.cheattitle, line: &lines-5, border: [], borderchars: ['─','│','─','│','╭','╮','╯','╰']})
@@ -350,7 +370,7 @@ fu! s:idemenu.open() abort
 endf
 
 
-fu! Idemenu_exe(_, idx) abort
+fu! s:idemenu_exe(_, idx) abort
     if a:idx == 1
         " ❯ python3 -m pip install online-judge-tools
         let contest_txt = readfile('contest_setting.txt')[0]
@@ -379,13 +399,13 @@ fu! Idemenu_exe(_, idx) abort
     elseif a:idx == 3
         cal CocActionAsync('rename')
     elseif a:idx == 4
+        exe 'UltiSnipsEdit'
+    elseif a:idx == 5
         echohl DarkBlue
         let code = input('AtCode Contest Code :', readfile('contest_setting.txt')[0])
         echohl None
         cal writefile([code], 'contest_setting.txt')
         cal popup_notification(['contest_setting : '.code], #{border:[], zindex:999, line: &lines-30, col: &columns-40, time:2000})
-    elseif a:idx == 5
-        exe 'CocList snippets'
     elseif a:idx == 6
         cal s:atcoder_timer_start()
     elseif a:idx == 7
