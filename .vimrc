@@ -64,7 +64,6 @@ nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
 nnoremap <C-h> ^<Plug>(anchor)
 nnoremap <C-l> $<Plug>(anchor)
 nnoremap <leader>w <Plug>(QuickScopeToggle)
-nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 nnoremap <Leader>v <Plug>(ide-menu)
 
 " ##################         EDIT           ###################
@@ -125,12 +124,14 @@ set shortmess-=S " show hit word's number at right bottom
 nnoremap # *N<Plug>(quickhl-manual-this)
 nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset):noh<CR>
 nnoremap s <Plug>(easymotion-sn)
+nnoremap <Leader><Leader>w <Plug>(easymotion-bd-w)
 nnoremap <silent><Leader>s :CocCommand fzf-preview.Lines<CR>
 nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
 nnoremap <silent><Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
 nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
 nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
 nnoremap <Leader><Leader>s :CocCommand fzf-preview.ProjectGrep 
+nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 
 " ##################         OTHERS         ###################
 " basic
@@ -221,6 +222,9 @@ com! CocSetupAll cal CocSetup()
 let g:comfortable_motion_interval = 1000.0 / 60
 let g:comfortable_motion_friction = 70.0
 let g:comfortable_motion_air_drag = 5.0
+
+" easymotion -------------------------------
+let g:EasyMotion_do_mapping = 0
 
 " cleaver-f --------------------------------
 let g:clever_f_smart_case = 1
