@@ -40,22 +40,6 @@ set laststatus=2 showtabline=2
 
 " ##################         WINDOW        ###################
 set splitright
-" simeji/winresizer
-" window forcus move
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-nnoremap <C-k> <C-w>k
-nnoremap <C-j> <C-w>j
-set termwinkey=<C-k>
-tnoremap <C-h> <C-k>h
-tnoremap <C-l> <C-k>l
-tnoremap <C-k> <C-k>k
-tnoremap <C-j> <C-k>j
-" window resize
-nnoremap <Left> 4<C-w><
-nnoremap <Right> 4<C-w>>
-nnoremap <Up> 4<C-w>-
-nnoremap <Down> 4<C-w>+
 " buffer move / close
 nnoremap <C-n> <Plug>(buf-prev)
 nnoremap <C-p> <Plug>(buf-next)
@@ -75,6 +59,8 @@ nnoremap <S-Tab> 5k<Plug>(anchor)
 nnoremap H H<Plug>(anchor)
 nnoremap M M<Plug>(anchor)
 nnoremap L L<Plug>(anchor)
+nnoremap <C-j> <Plug>(edgemotion-j)
+nnoremap <C-k> <Plug>(edgemotion-k)
 nnoremap <leader>w <Plug>(QuickScopeToggle)
 nnoremap <Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 nnoremap <Leader>v <Plug>(ide-menu)
@@ -98,6 +84,7 @@ inoremap <C-h> <C-o>h
 inoremap <C-l> <C-o>l
 inoremap <C-k> <C-o>k
 inoremap <C-j> <C-o>j
+inoremap <C-a> <C-o>A
 " d = delete(no clipboard)
 nnoremap d "_d
 vnoremap d "_d
@@ -127,7 +114,6 @@ set wildchar=<Tab> " command mode comletion key
 set wildmode=full " command mode completion match mode
 set complete=.,w,b,u,U,k,kspell,s,i,d,t " insert mode completion resource
 set completeopt=menuone,noinsert,preview,popup " insert mode completion window
-" TODO これが邪魔かも？？
 " completion with Tab
 inoremap <expr><CR> pumvisible() ? '<C-y>' : '<CR>'
 inoremap <expr><Tab> pumvisible() ? '<C-n>' : '<C-t>'
@@ -147,8 +133,8 @@ nnoremap <Leader>s :CocCommand fzf-preview.Lines<CR>
 nnoremap <Leader>e :CocCommand explorer --width 30<CR>
 nnoremap <Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
 nnoremap <Leader>b :CocCommand fzf-preview.Buffers<CR>
-nnoremap <Leader>h :CocCommand fzf-preview.ProjectMruFiles<CR>
-" TODO グレップ機能を用意する？
+nnoremap <Leader>h :CocCommand fzf-preview.MruFiles<CR>
+nnoremap <Leader><Leader>s :CocCommand fzf-preview.ProjectGrep 
 
 " ##################         OTHERS         ###################
 " basic
@@ -179,8 +165,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
+Plug 'simeji/winresizer'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'easymotion/vim-easymotion'
+Plug 'haya14busa/vim-edgemotion'
+Plug 'rhysd/clever-f.vim'
 Plug 'unblevable/quick-scope'
 Plug 't9md/vim-quickhl'
 Plug 'MattesGroeger/vim-bookmarks'
@@ -229,6 +218,25 @@ fu! CocSetup() abort
 endf
 
 com! CocSetupAll cal CocSetup()
+
+" comfortable motion -----------------------
+let g:comfortable_motion_interval = 1000.0 / 60
+let g:comfortable_motion_friction = 80.0
+let g:comfortable_motion_air_drag = 5.0
+
+" cleaver-f --------------------------------
+let g:clever_f_smart_case = 1
+aug cleaver_f
+    au!
+    au ColorScheme * highlight CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=245
+aug END
+
+" quick scope ------------------------------
+aug qs_colors
+  au!
+  au ColorScheme * highlight QuickScopePrimary ctermfg=204 cterm=underline
+  au ColorScheme * highlight QuickScopeSecondary ctermfg=81 cterm=underline
+aug END
 
 " airline ----------------------------------
 let g:airline_theme = 'onedark'
@@ -281,8 +289,7 @@ nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(
 
 " ultisnips --------------------------------
 " TODO なんか変
-let g:UltiSnipsExpandTrigger="<Down>"
-
+"let g:UltiSnipsExpandTrigger="<Down>"
 
 " ################# Anchor #################
 " Tab 5row Anchor
@@ -316,9 +323,9 @@ let s:idemenu = #{
         \ '[ReName]          rename current word recursively',
         \ '[🚀 ContestCode]  checkout contest code',
         \ '[Snippet]         edit snippets',
-        \ '[⏱️ Timer]        start timer with bell',
-        \ '[🔓 Stop]         stop timer',
-        \ '[🎬 All Cut]      copy all and delete',
+        \ '[⏱️ AcTimer]      start timer for AtCoder ',
+        \ '[🔓 AcStop]       stop timer for AtCoder',
+        \ '[🎬 All Cut]      cut all & next Problem ',
     \ ],
     \ cheatid: 0, cheattitle: ' LSP KeyMaps ',
     \ cheat: [
