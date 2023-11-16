@@ -291,6 +291,7 @@ noremap <silent><Plug>(buf-next) :<C-u>cal <SID>moveBuf('next')<CR>
 noremap <silent><Plug>(buf-close) :<C-u>cal <SID>closeBuf()<CR>
 
 " coc.nvim --------------------------------
+let $FZF_PREVIEW_PREVIEW_BAT_THEME = 'TwoDark'
 let g:coc_snippet_next = '<Tab>'
 let g:coc_snippet_prev = '<S-Tab>'
 autocmd CursorHold * silent cal CocActionAsync('highlight')
