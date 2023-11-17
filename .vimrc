@@ -384,6 +384,7 @@ fu! s:idemenu_exe(_, idx) abort
         cal system(pre)
         let cmd = 'cd '.work_dir.' && '.test_cmd
         let s:ac_test_winid = bufwinid('ac_test')
+        let current_win = winnr()
         if s:ac_test_winid == -1
             sil! exe 'vne ac_test'
         else
@@ -395,6 +396,7 @@ fu! s:idemenu_exe(_, idx) abort
         setl filetype=log
         cal matchadd('DarkBlue', 'SUCCESS')
         sil! exe 'r!'.cmd
+        exe current_win.'wincmd w'
         let s:test_timer_id = timer_start(200, {tid -> s:ac_test_timer(tid)}, { 'repeat' : 10 })
     elseif a:idx == 2
         cal CocActionAsync('format')
