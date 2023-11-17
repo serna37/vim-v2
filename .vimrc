@@ -132,7 +132,7 @@ nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
 nnoremap <silent><Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
 nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
 nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
-nnoremap <Leader><Leader>s :CocCommand fzf-preview.ProjectGrep 
+nnoremap <silent><Leader><Leader>s :CocCommand fzf-preview.ProjectGrep .<CR>
 nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 
 " ##################         OTHERS         ###################
