@@ -162,8 +162,8 @@ Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf'
 Plug 'simeji/winresizer'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'easymotion/vim-easymotion'
@@ -221,9 +221,12 @@ endf
 com! CocSetupAll cal CocSetup()
 
 " comfortable motion -----------------------
+let g:comfortable_motion_no_default_key_mappings = 1
 let g:comfortable_motion_interval = 1000.0 / 60
 let g:comfortable_motion_friction = 70.0
 let g:comfortable_motion_air_drag = 5.0
+nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
+nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
 
 " easymotion -------------------------------
 let g:EasyMotion_do_mapping = 0
@@ -304,8 +307,8 @@ nnoremap <silent><Leader>o :CocCommand fzf-preview.CocOutline<CR>
 nnoremap <silent><Leader>? :cal CocAction('doHover')<CR>
 nnoremap <Leader>, <plug>(coc-diagnostic-next)
 nnoremap <Leader>. <plug>(coc-diagnostic-prev)
-nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+nnoremap <silent><nowait><expr> <C-d> coc#float#has_scroll() ? coc#float#scroll(1) : comfortable_motion#flick(100)
+nnoremap <silent><nowait><expr> <C-u> coc#float#has_scroll() ? coc#float#scroll(0) : comfortable_motion#flick(-100)
 
 " ultisnips --------------------------------
 let g:UltiSnipsExpandTrigger="<Nop>"
