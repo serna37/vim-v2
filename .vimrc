@@ -202,9 +202,9 @@ let s:coc_extensions = [
 
 let s:coc_config = ['{',
     \ '    "explorer.icon.enableNerdfont": true,',
+    \ '    "inlayHint.enable": false,',
     \ '    "explorer.file.showHiddenFiles": true,',
-    \ '    "python.formatting.provider": "yapf",',
-    \ '    "pyright.inlayHints.variableTypes": false',
+    \ '    "python.formatting.provider": "yapf"',
     \ '}',
     \]
 
@@ -345,8 +345,9 @@ let s:idemenu = #{
         \ '[ReName]          rename current word recursively',
         \ '[Snippet]         edit snippets',
         \ '[🚀 ContestCode]  checkout contest code',
-        \ '[⏱️ AcTimer]      start timer for AtCoder ',
-        \ '[🔓 AcStop]       stop timer for AtCoder',
+        \ '[⏱️ Ac Timer]     start timer for AtCoder ',
+        \ '[🔓 Ac Stop]      stop timer for AtCoder',
+        \ '[♻️  Ac Prev]      undo cut & return  prev Problem ',
         \ '[🎬 Ac Cut]       cut all & next Problem ',
     \ ],
     \ cheatid: 0, cheattitle: ' LSP KeyMaps ',
@@ -391,13 +392,14 @@ fu! s:idemenu_exe(_, idx) abort
             call win_gotoid(s:ac_test_winid)
             exe '%d'
         endif
+        let s:ac_test_bufnr = bufnr()
         setl buftype=nofile bufhidden=wipe modifiable
         setl nonumber norelativenumber nocursorline nocursorcolumn signcolumn=no
         setl filetype=log
         cal matchadd('DarkBlue', 'SUCCESS')
         sil! exe 'r!'.cmd
         exe current_win.'wincmd w'
-        let s:test_timer_id = timer_start(200, {tid -> s:ac_test_timer(tid)}, { 'repeat' : 10 })
+        let s:ac_test_timer_id = timer_start(200, {tid -> s:ac_test_timer(tid)}, { 'repeat' : 10 })
     elseif a:idx == 2
         cal CocActionAsync('format')
     elseif a:idx == 3
@@ -417,13 +419,23 @@ fu! s:idemenu_exe(_, idx) abort
         cal s:bell_submarine()
         cal s:atcoder_timer_stop()
     elseif a:idx == 8
+        exe 'u'
+        exe 'w'
+        let alp = #{a:'a',b:'a',c:'b',d:'c',e:'d',f:'e',g:'f'}
+        let contest_txt = readfile('contest_setting.txt')[0]
+        let contest_cd = split(contest_txt, '_')[0]
+        let question_cd = split(contest_txt, '_')[1]
+        let next = contest_cd.'_'.get(alp, question_cd, 'a')
+        cal writefile([next], 'contest_setting.txt')
+        cal popup_notification(['contest_setting : '.next], #{border:[], zindex:999, line: &lines-30, col: &columns-40, time:2000})
+    elseif a:idx == 9
         exe '%d'
         exe 'w'
         let alp = #{a:'b',b:'c',c:'d',d:'e',e:'f',f:'g'}
         let contest_txt = readfile('contest_setting.txt')[0]
         let contest_cd = split(contest_txt, '_')[0]
         let question_cd = split(contest_txt, '_')[1]
-        let next = contest_cd.'_'.get(alp, question_cd, '')
+        let next = contest_cd.'_'.get(alp, question_cd, 'a')
         cal writefile([next], 'contest_setting.txt')
         cal popup_notification(['contest_setting : '.next], #{border:[], zindex:999, line: &lines-30, col: &columns-40, time:2000})
     endif
@@ -438,10 +450,11 @@ noremap <silent><Plug>(ide-menu) :<C-u>cal <SID>idemenu()<CR>
 
 
 " AtCoder用テストsuccess時のベル
-let s:test_timer_id = 0
+let s:ac_test_timer_id = 0
 let s:ac_test_winid = -1
+let s:ac_test_bufnr = -1
 fu! s:ac_test_timer(tid) abort
-    for i in getline(0, line("$"))
+    for i in getbufline(s:ac_test_bufnr, 0, line("$"))
         if match(i, "test success") != -1
             cal s:bell_hero()
             cal timer_stop(a:tid)
