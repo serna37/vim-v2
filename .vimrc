@@ -393,7 +393,7 @@ fu! s:idemenu_exe(_, idx) abort
             exe '%d'
         endif
         let s:ac_test_bufnr = bufnr()
-        setl buftype=nofile bufhidden=wipe modifiable
+        setl buftype=nofile bufhidden=wipe nobuflisted modifiable
         setl nonumber norelativenumber nocursorline nocursorcolumn signcolumn=no
         setl filetype=log
         cal matchadd('DarkBlue', 'SUCCESS')
