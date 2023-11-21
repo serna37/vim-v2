@@ -1,5 +1,3 @@
-let mapleader = "\<SPACE>"
-
 " ##################          FILE          ###################
 " file
 set fileformat=unix " LF
@@ -40,9 +38,6 @@ set laststatus=2 showtabline=2
 
 " ##################         WINDOW        ###################
 set splitright
-" buffer move / close
-nnoremap <silent><Leader>t :cal popup_create(term_start([&shell],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
-nnoremap <silent><Leader>g :cal popup_create(term_start(['lazygit'],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
 
 " ##################         MOTION         ###################
 " row move
@@ -59,11 +54,6 @@ set showmatch " jump pair of parentheses when write
 set matchtime=3 " jump term sec
 " save
 nnoremap <C-s> :w<CR>
-" row visual
-nnoremap vv ^v$h
-" insert move
-inoremap <C-l> <C-o>l
-inoremap {{ <C-o>A{}<C-o>h
 
 " ##################       COMPLETION       ###################
 " indent
@@ -105,7 +95,24 @@ set foldcolumn=1 " fold preview
 
 
 " ############################################################
-" #### PLUGIN MANAGE
+" #### Custom
+" ############################################################
+let mapleader = "\<SPACE>"
+
+" terminal
+nnoremap <silent><Leader>t :cal popup_create(term_start([&shell],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
+nnoremap <silent><Leader>g :cal popup_create(term_start(['lazygit'],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
+
+" row visual
+nnoremap vv ^v$h
+
+" insert move
+inoremap <C-l> <C-o>l
+inoremap {{ <C-o>A{}<C-o>h
+
+
+" ############################################################
+" #### PLUGINS
 " ############################################################
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 call plug#begin()
