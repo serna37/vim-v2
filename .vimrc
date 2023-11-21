@@ -273,6 +273,9 @@ nnoremap <Leader>. <plug>(coc-diagnostic-prev)
 nnoremap <silent><nowait><expr> <C-d> coc#float#has_scroll() ? coc#float#scroll(1) : comfortable_motion#flick(100)
 nnoremap <silent><nowait><expr> <C-u> coc#float#has_scroll() ? coc#float#scroll(0) : comfortable_motion#flick(-100)
 
+" ### util
+Plug 'soywod/unfog.vim'
+
 
 call plug#end()
 
