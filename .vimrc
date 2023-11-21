@@ -124,6 +124,7 @@ Plug 'haya14busa/vim-edgemotion'
 Plug 'rhysd/clever-f.vim'
 Plug 'unblevable/quick-scope'
 Plug 't9md/vim-quickhl'
+Plug 'haya14busa/vim-asterisk'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'simeji/winresizer'
 Plug 'yuttie/comfortable-motion.vim'
@@ -140,8 +141,8 @@ aug cleaver_f
     au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=63
 aug END
 nnoremap <leader>w <Plug>(QuickScopeToggle)
-nnoremap # *N<Plug>(quickhl-manual-this)
-nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset):noh<CR>
+nnoremap # <Plug>(asterisk-z*)<Plug>(quickhl-manual-this)
+nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset)<Plug>(clever-f-reset):noh<CR>
 aug qs_colors
   au!
   au ColorScheme * hi QuickScopePrimary ctermfg=204 cterm=underline
@@ -162,6 +163,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'sheerun/vim-polyglot'
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'liuchengxu/vim-which-key'
 let g:airline_theme = 'onedark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
@@ -196,6 +198,7 @@ nnoremap <C-n> <Plug>(buf-prev)
 nnoremap <C-p> <Plug>(buf-next)
 nnoremap <Leader>x <Plug>(buf-close)
 nnoremap <silent><Leader>z :Goyo<CR>
+nnoremap <silent><Leader> :WhichKey '<Space>'<CR>
 
 " ### Filer
 Plug 'junegunn/fzf', {'do': { -> fzf#install() }}
@@ -205,7 +208,7 @@ nnoremap <silent><Leader>s :CocCommand fzf-preview.Lines<CR>
 nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
 nnoremap <silent><Leader>f <Plug>(smart-fzf)
 nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
-nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
+nnoremap <silent><Leader>hf :CocCommand fzf-preview.MruFiles<CR>
 nnoremap <silent><Leader><Leader>s :CocCommand fzf-preview.ProjectGrep .<CR>
 nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 nnoremap <silent><Leader>nn :CocCommand fzf-preview.MemoList<CR>
