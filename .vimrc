@@ -122,7 +122,7 @@ Plug 'serna37/vim-anchor5'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/vim-edgemotion'
 Plug 'rhysd/clever-f.vim'
-Plug 'unblevable/quick-scope'
+Plug 'serna37/vim-fscope-around'
 Plug 't9md/vim-quickhl'
 Plug 'haya14busa/vim-asterisk'
 Plug 'MattesGroeger/vim-bookmarks'
@@ -140,14 +140,9 @@ aug cleaver_f
     au!
     au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=63
 aug END
-nnoremap <leader>w <Plug>(QuickScopeToggle)
+nnoremap <leader>w <Plug>(fscope-around-toggle)
 nnoremap # <Plug>(asterisk-z*)<Plug>(quickhl-manual-this)
 nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset)<Plug>(clever-f-reset):noh<CR>
-aug qs_colors
-  au!
-  au ColorScheme * hi QuickScopePrimary ctermfg=204 cterm=underline
-  au ColorScheme * hi QuickScopeSecondary ctermfg=81 cterm=underline
-aug END
 let g:comfortable_motion_no_default_key_mappings = 1
 let g:comfortable_motion_interval = 1000.0 / 60
 let g:comfortable_motion_friction = 70.0
