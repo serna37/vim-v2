@@ -41,30 +41,13 @@ set laststatus=2 showtabline=2
 " ##################         WINDOW        ###################
 set splitright
 " buffer move / close
-nnoremap <C-n> <Plug>(buf-prev)
-nnoremap <C-p> <Plug>(buf-next)
-nnoremap <Leader>x <Plug>(buf-close)
 nnoremap <silent><Leader>t :cal popup_create(term_start([&shell],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
 nnoremap <silent><Leader>g :cal popup_create(term_start(['lazygit'],#{hidden:1,term_finish:'close'}),#{border:[],minwidth:&columns*3/4,minheight:&lines*3/4})<CR>
-nnoremap <silent><Leader>z :Goyo<CR>
 
 " ##################         MOTION         ###################
 " row move
 nnoremap j gj
 nnoremap k gk
-vnoremap <Tab> 5gj
-vnoremap <S-Tab> 5gk
-nnoremap <Tab> 5j<Plug>(anchor)
-nnoremap <S-Tab> 5k<Plug>(anchor)
-nnoremap H H<Plug>(anchor)
-nnoremap M M<Plug>(anchor)
-nnoremap L L<Plug>(anchor)
-nnoremap <C-j> <Plug>(edgemotion-j)<Plug>(anchor)
-nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
-nnoremap <C-h> ^<Plug>(anchor)
-nnoremap <C-l> $<Plug>(anchor)
-nnoremap <leader>w <Plug>(QuickScopeToggle)
-nnoremap <Leader>v <Plug>(ide-menu)
 
 " ##################         EDIT           ###################
 " basic
@@ -74,28 +57,13 @@ set backspace=indent,eol,start " backspace attitude on insert mode
 " parentheses
 set showmatch " jump pair of parentheses when write
 set matchtime=3 " jump term sec
-" return normal & save
-inoremap jj <Esc>:CommaOrSemiColon<CR>:w<CR>
-" row visual
-nnoremap vv ^v$h
 " save
 nnoremap <C-s> :w<CR>
-" o -> A+CR (adhoc for snippet tabstop bug...)
-nnoremap o A<CR>
-" d = delete(no clipboard)
-nnoremap d "_d
-vnoremap d "_d
-" x = cut(yank register)
-nnoremap x "+x
-vnoremap x "+x
-" p P = paste(from yank register)
-nnoremap p "+p
-nnoremap P "+P
-vnoremap p "+p
-vnoremap P "+P
-" block move at visual mode
-vnoremap <C-j> "zx"zp`[V`]
-vnoremap <C-k> "zx<Up>"zP`[V`]
+" row visual
+nnoremap vv ^v$h
+" insert move
+inoremap <C-l> <C-o>l
+inoremap {{ <C-o>A{}<C-o>h
 
 " ##################       COMPLETION       ###################
 " indent
@@ -123,17 +91,6 @@ set hlsearch " highlight match words
 set ignorecase " ignore case search
 set smartcase " don't ignore case when enterd UPPER CASE"
 set shortmess-=S " show hit word's number at right bottom
-nnoremap # *N<Plug>(quickhl-manual-this)
-nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset):noh<CR>
-nnoremap s <Plug>(easymotion-sn)
-nnoremap <Leader><Leader>w <Plug>(easymotion-bd-w)
-nnoremap <silent><Leader>s :CocCommand fzf-preview.Lines<CR>
-nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
-nnoremap <silent><Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
-nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
-nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
-nnoremap <silent><Leader><Leader>s :CocCommand fzf-preview.ProjectGrep .<CR>
-nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
 
 " ##################         OTHERS         ###################
 " basic
@@ -152,120 +109,56 @@ set foldcolumn=1 " fold preview
 " ############################################################
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'SirVer/ultisnips'
-Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
-Plug 'mhinz/vim-startify'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'simeji/winresizer'
-Plug 'yuttie/comfortable-motion.vim'
+
+" ### Enhanced vim motion
+Plug 'serna37/vim-anchor5'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/vim-edgemotion'
 Plug 'rhysd/clever-f.vim'
 Plug 'unblevable/quick-scope'
 Plug 't9md/vim-quickhl'
 Plug 'MattesGroeger/vim-bookmarks'
-Plug 'junegunn/goyo.vim'
-Plug 'preservim/vim-indent-guides'
-Plug 'andymass/vim-matchup'
-Plug 'lfilho/cosco.vim'
-Plug 'markonm/traces.vim'
-Plug 'thinca/vim-quickrun'
-Plug 'joshdick/onedark.vim'
-Plug 'sheerun/vim-polyglot'
-call plug#end()
-
-" coc extentions
-let s:coc_extensions = [
-    \ 'coc-explorer',
-    \ 'coc-snippets',
-    \ 'coc-fzf-preview',
-    \ 'coc-sh',
-    \ 'coc-vimlsp',
-    \ 'coc-json',
-    \ 'coc-sql',
-    \ 'coc-html',
-    \ 'coc-css',
-    \ 'coc-tsserver',
-    \ 'coc-clangd',
-    \ 'coc-go',
-    \ 'coc-pyright',
-    \ 'coc-java'
-    \ ]
-
-let s:coc_config = ['{',
-    \ '    "explorer.icon.enableNerdfont": true,',
-    \ '    "inlayHint.enable": false,',
-    \ '    "explorer.file.showHiddenFiles": true,',
-    \ '    "python.formatting.provider": "yapf"',
-    \ '}',
-    \]
-
-" to disable inlay hint in clangd, create file
-" mkdir -p ~/Library/Preferences/clangd && vi ~/Library/Preferences/clangd/config.yaml
-" InlayHints:
-"  Enabled: No
-
-fu! CocSetup() abort
-    exe 'CocInstall '.join(s:coc_extensions, ' ')
-    cal writefile(s:coc_config, $HOME.'/.vim/coc-settings.json')
-endf
-
-com! CocSetupAll cal CocSetup()
-
-" comfortable motion -----------------------
-let g:comfortable_motion_no_default_key_mappings = 1
-let g:comfortable_motion_interval = 1000.0 / 60
-let g:comfortable_motion_friction = 70.0
-let g:comfortable_motion_air_drag = 5.0
-nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
-nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
-
-" easymotion -------------------------------
+Plug 'simeji/winresizer'
+Plug 'yuttie/comfortable-motion.vim'
+nnoremap <C-h> ^<Plug>(anchor)
+nnoremap <C-l> $<Plug>(anchor)
 let g:EasyMotion_do_mapping = 0
-
-" cleaver-f --------------------------------
+nnoremap s <Plug>(easymotion-sn)
+nnoremap <Leader><Leader>w <Plug>(easymotion-bd-w)
+nnoremap <C-j> <Plug>(edgemotion-j)<Plug>(anchor)
+nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
 let g:clever_f_smart_case = 1
 aug cleaver_f
     au!
     au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=236
 aug END
-
-" quick scope ------------------------------
+nnoremap <leader>w <Plug>(QuickScopeToggle)
+nnoremap # *N<Plug>(quickhl-manual-this)
+nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset):noh<CR>
 aug qs_colors
   au!
   au ColorScheme * hi QuickScopePrimary ctermfg=204 cterm=underline
   au ColorScheme * hi QuickScopeSecondary ctermfg=81 cterm=underline
 aug END
+let g:comfortable_motion_no_default_key_mappings = 1
+let g:comfortable_motion_interval = 1000.0 / 60
+let g:comfortable_motion_friction = 70.0
+let g:comfortable_motion_air_drag = 5.0
+nnoremap <silent><C-f> :cal comfortable_motion#flick(200)<CR>
+nnoremap <silent><C-b> :cal comfortable_motion#flick(-200)<CR>
 
-" indent guide -----------------------------
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 2
-let g:indent_guides_exclude_filetypes = ['help', 'coc-explorer', 'startify']
-let g:indent_guides_auto_colors = 0
-aug indent_guide
-    au!
-    au ColorScheme * hi IndentGuidesOdd ctermbg=236
-    au ColorScheme * hi IndentGuidesEven ctermbg=236
-aug END
 
-" cosco ------------------------------------
-let g:cosco_filetype_whitelist = ['cpp']
-
-" airline ----------------------------------
+" ### Enhanced Visualization
+Plug 'mhinz/vim-startify'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'sheerun/vim-polyglot'
+Plug 'joshdick/onedark.vim'
+Plug 'junegunn/goyo.vim'
 let g:airline_theme = 'onedark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_highlighting_cache = 1
-
 fu! s:moveBuf(flg) abort
     let current_id = ''
     let buf_arr = []
@@ -292,9 +185,71 @@ endf
 noremap <silent><Plug>(buf-prev) :<C-u>cal <SID>moveBuf('prev')<CR>
 noremap <silent><Plug>(buf-next) :<C-u>cal <SID>moveBuf('next')<CR>
 noremap <silent><Plug>(buf-close) :<C-u>cal <SID>closeBuf()<CR>
+nnoremap <C-n> <Plug>(buf-prev)
+nnoremap <C-p> <Plug>(buf-next)
+nnoremap <Leader>x <Plug>(buf-close)
+nnoremap <silent><Leader>z :Goyo<CR>
 
-" coc.nvim --------------------------------
+" ### Filer
+Plug 'junegunn/fzf', {'do': { -> fzf#install() }}
+Plug 'junegunn/fzf.vim'
 let $FZF_PREVIEW_PREVIEW_BAT_THEME = 'TwoDark'
+nnoremap <silent><Leader>s :CocCommand fzf-preview.Lines<CR>
+nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
+nnoremap <silent><Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
+nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
+nnoremap <silent><Leader><Leader>s :CocCommand fzf-preview.ProjectGrep .<CR>
+nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
+
+" ### Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" ### Reading
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'andymass/vim-matchup'
+Plug 'preservim/vim-indent-guides'
+Plug 'liuchengxu/vista.vim'
+" brew install code-minimap
+Plug 'wfxr/minimap.vim'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_exclude_filetypes = ['help', 'coc-explorer', 'startify']
+let g:indent_guides_auto_colors = 0
+aug indent_guide
+    au!
+    au ColorScheme * hi IndentGuidesOdd ctermbg=236
+    au ColorScheme * hi IndentGuidesEven ctermbg=236
+aug END
+let g:vista_sidebar_width = 15
+nnoremap <silent><Leader><Leader>o :Vista!!<CR>
+let g:minimap_git_colors = 1
+nnoremap <silent><Leader><Leader>m :MinimapToggle<CR>
+
+" ### Writing
+Plug 'SirVer/ultisnips'
+Plug 'markonm/traces.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'lfilho/cosco.vim'
+Plug 'matze/vim-move'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+let g:UltiSnipsExpandTrigger="<Nop>"
+let g:UltiSnipsExpandTrigger="<C-s>"
+" o -> A+CR (adhoc for snippet tabstop bug...)
+nnoremap o A<CR>
+let g:cosco_filetype_whitelist = ['cpp']
+" return normal & save
+inoremap jj <Esc>:CommaOrSemiColon<CR>:w<CR>
+let g:move_key_modifier_visualmode = 'C'
+
+" ### LSP IDE
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'thinca/vim-quickrun'
+Plug 'puremourning/vimspector'
 let g:coc_snippet_next = '<Tab>'
 let g:coc_snippet_prev = '<S-Tab>'
 autocmd CursorHold * silent cal CocActionAsync('highlight')
@@ -310,33 +265,51 @@ nnoremap <Leader>. <plug>(coc-diagnostic-prev)
 nnoremap <silent><nowait><expr> <C-d> coc#float#has_scroll() ? coc#float#scroll(1) : comfortable_motion#flick(100)
 nnoremap <silent><nowait><expr> <C-u> coc#float#has_scroll() ? coc#float#scroll(0) : comfortable_motion#flick(-100)
 
-" ultisnips --------------------------------
-let g:UltiSnipsExpandTrigger="<Nop>"
 
-" ################# Anchor #################
-" Tab 5row Anchor
-aug anchor_color
+call plug#end()
+
+" coc extentions
+let s:coc_extensions = [
+    \ 'coc-explorer',
+    \ 'coc-snippets',
+    \ 'coc-fzf-preview',
+    \ 'coc-sh',
+    \ 'coc-vimlsp',
+    \ 'coc-json',
+    \ 'coc-sql',
+    \ 'coc-html',
+    \ 'coc-css',
+    \ 'coc-tsserver',
+    \ 'coc-clangd',
+    \ 'coc-go',
+    \ 'coc-pyright',
+    \ 'coc-java'
+    \ ]
+
+let s:coc_config = ['{',
+    \ '    "explorer.icon.enableNerdfont": true,',
+    \ '    "explorer.file.showHiddenFiles": true,',
+    \ '    "inlayHint.enable": false,',
+    \ '    "clangd.arguments": ["--header-insertion=never"],',
+    \ '    "python.formatting.provider": "yapf"',
+    \ '}',
+    \]
+
+fu! CocSetup() abort
+    exe 'CocInstall '.join(s:coc_extensions, ' ')
+    cal writefile(s:coc_config, $HOME.'/.vim/coc-settings.json')
+endf
+
+com! CocSetupAll cal CocSetup()
+
+" ################# IDE #################
+" IDE menu
+aug dark_color
     au!
     au ColorScheme * hi DarkRed ctermfg=204
     au ColorScheme * hi DarkOrange ctermfg=180
     au ColorScheme * hi DarkBlue ctermfg=39
 aug END
-sign define anch text=➤ texthl=DarkRed
-let s:anc_tid = 0
-fu! s:anchor_set() abort
-    cal timer_stop(s:anc_tid)
-    cal sign_unplace('anchor')
-    let l = line('.')
-    let lines = l-5 > 0 ? [l-5, l, l+5] : [l, l+5]
-    for v in lines
-        cal sign_place(0, 'anchor', 'anch', bufname('%'), #{lnum: v})
-    endfor
-    let s:anc_tid = timer_start(2000, { tid -> sign_unplace('anchor') })
-endf
-noremap <silent><Plug>(anchor) :<C-u>cal <SID>anchor_set()<CR>
-
-" ################# IDE #################
-" IDE menu
 let s:idemenu = #{
     \ menuid: 0, mttl: ' IDE MENU (j / k) Enter choose ',
     \ menu: [
@@ -355,6 +328,8 @@ let s:idemenu = #{
         \ ' (Space d) [Definition]     Go to Definition ',
         \ ' (Space r) [Reference]      Reference ',
         \ ' (Space o) [Outline]        view outline on popup ',
+        \ ' (Space*2 o) [Vista]        view vista on side ',
+        \ ' (Space*2 m) [MiniMap]      view MiniMap on side ',
         \ ' (Space ?) [Document]       show document on popup scroll C-f/b ',
         \ ' (Space ,) [Next Diagnosis] jump next diagnosis ',
         \ ' (Space .) [Prev Diagnosis] jump prev diagnosis ',
@@ -447,6 +422,7 @@ fu! s:idemenu() abort
     cal s:idemenu.open()
 endf
 noremap <silent><Plug>(ide-menu) :<C-u>cal <SID>idemenu()<CR>
+nnoremap <Leader>v <Plug>(ide-menu)
 
 
 " AtCoder用テストsuccess時のベル
