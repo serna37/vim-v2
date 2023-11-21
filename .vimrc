@@ -203,11 +203,21 @@ Plug 'junegunn/fzf.vim'
 let $FZF_PREVIEW_PREVIEW_BAT_THEME = 'TwoDark'
 nnoremap <silent><Leader>s :CocCommand fzf-preview.Lines<CR>
 nnoremap <silent><Leader>e :CocCommand explorer --width 30<CR>
-nnoremap <silent><Leader>f :CocCommand fzf-preview.ProjectFiles<CR>
+nnoremap <silent><Leader>f <Plug>(smart-fzf)
 nnoremap <silent><Leader>b :CocCommand fzf-preview.Buffers<CR>
 nnoremap <silent><Leader>h :CocCommand fzf-preview.MruFiles<CR>
 nnoremap <silent><Leader><Leader>s :CocCommand fzf-preview.ProjectGrep .<CR>
 nnoremap <silent><Leader>m :CocCommand fzf-preview.Bookmarks<CR>
+nnoremap <silent><Leader>nn :CocCommand fzf-preview.MemoList<CR>
+nnoremap <silent><Leader>ng :CocCommand fzf-preview.MemoListGrep .<CR>
+fu! s:gitchkfzf() abort
+    if system('git rev-parse --is-inside-work-tree') =~ 'fatal'
+        exe 'CocCommand fzf-preview.DirectoryFiles'
+    else
+        exe 'CocCommand fzf-preview.ProjectFiles'
+    endif
+endf
+noremap <silent><Plug>(smart-fzf) :<C-u>cal <SID>gitchkfzf()<CR>
 
 " ### Git
 Plug 'tpope/vim-fugitive'
@@ -275,7 +285,7 @@ nnoremap <silent><nowait><expr> <C-u> coc#float#has_scroll() ? coc#float#scroll(
 
 " ### util
 Plug 'soywod/unfog.vim'
-
+Plug 'glidenote/memolist.vim'
 
 call plug#end()
 
