@@ -41,11 +41,13 @@ nnoremap <Leader><Leader>w <Plug>(easymotion-bd-w)
 nnoremap <C-j> <Plug>(edgemotion-j)<Plug>(anchor)
 nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
 let g:clever_f_smart_case = 1
+let g:clever_f_timeout_ms = 2000
+let g:clever_f_highlight_timeout_ms = 2000
 aug cleaver_f
     au!
     au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=24
 aug END
-nnoremap <leader>w <Plug>(fscope-around-toggle)
+nnoremap <leader>w <Plug>(fscope-around-toggle)<Plug>(clever-f-reset)
 nnoremap # <Plug>(asterisk-z*)<Plug>(quickhl-manual-this)
 nnoremap <silent><Leader>q <Plug>(quickhl-manual-reset)<Plug>(clever-f-reset):noh<CR>
 let g:comfortable_motion_no_default_key_mappings = 1
@@ -190,6 +192,7 @@ nnoremap <silent><nowait><expr> <C-u> coc#float#has_scroll() ? coc#float#scroll(
 " ### util
 Plug 'soywod/unfog.vim'
 Plug 'glidenote/memolist.vim'
+Plug 'segeljakt/vim-silicon'
 
 call plug#end()
 
