@@ -138,7 +138,7 @@ nnoremap <C-k> <Plug>(edgemotion-k)<Plug>(anchor)
 let g:clever_f_smart_case = 1
 aug cleaver_f
     au!
-    au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=63
+    au ColorScheme * hi CleverFDefaultLabel cterm=bold,underline ctermfg=9 ctermbg=24
 aug END
 nnoremap <leader>w <Plug>(fscope-around-toggle)
 nnoremap # <Plug>(asterisk-z*)<Plug>(quickhl-manual-this)
