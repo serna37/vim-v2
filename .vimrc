@@ -193,6 +193,7 @@ nnoremap <silent><nowait><expr> <C-u> coc#float#has_scroll() ? coc#float#scroll(
 Plug 'soywod/unfog.vim'
 Plug 'glidenote/memolist.vim'
 Plug 'segeljakt/vim-silicon'
+Plug 'nanotee/zoxide.vim'
 
 call plug#end()
 
