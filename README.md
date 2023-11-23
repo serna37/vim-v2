@@ -9,6 +9,9 @@ need [junegunn/vim-plug](https://github.com/junegunn/vim-plug) .
 # junegunn/vim-plug (required)
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+# copy file. to ignore commentout after LF
+mkdir -p ~/.vim/after/plugin && cp after/plugin/common-settings.vim ~/.vim/after/plugin/
+
 # node & yarn
 brew install node
 npm install -g yarn
@@ -27,6 +30,16 @@ brew install code-minimap
 
 # unfog
 curl -sSL https://raw.githubusercontent.com/soywod/unfog/master/install.sh | bash
+
+# silicon
+# Install cargo
+curl https://sh.rustup.rs -sSf | sh
+
+# Install silicon
+cargo install silicon
+
+# Add cargo-installed binaries to the path
+export PATH="$PATH:$CARGO_HOME/bin"
 ```
 
 ## monolithic version
